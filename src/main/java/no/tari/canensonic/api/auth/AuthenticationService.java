@@ -24,6 +24,7 @@ public class AuthenticationService {
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {
+    public Authentication getAPIKeyAuthentication(HttpServletRequest request) {
         String apiKey = request.getParameter("apiKey");
         Optional<APIToken> token = apiTokenRepository.findAPITokenByToken(apiKey);
 
@@ -35,7 +36,7 @@ public class AuthenticationService {
         }
 
         // TODO, refactor this to allow for fine grained access control.
-        return new APITokenAuth(apiKey,List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        return new APITokenAuth(token.get().getToken(),token.get().getUsername(),List.of(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
 }

@@ -1,6 +1,13 @@
 spring:
   application:
     name: canensonic
+  config:
+    import: optional:file:.env[.properties]
   profiles:
     active:
       - dev
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:canensonic}
+    username: ${DB_USER:canens}
+    password: ${DB_PASSWORD:ChangeMe}
+    driver-class-name: org.postgresql.Driver

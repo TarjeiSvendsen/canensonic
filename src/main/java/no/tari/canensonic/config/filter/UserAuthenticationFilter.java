@@ -37,7 +37,10 @@ public class UserAuthenticationFilter extends GenericFilterBean {
                 return;
             }
 
-            if ((httpServletRequest.getParameter("u") != null) && (httpServletRequest.getParameter("p") != null)){
+            if (httpServletRequest.getParameter("t") != null || httpServletRequest.getParameter("s") != null){
+                ErrorWriterUtils.writeErrorElementToWriter(httpResponse,mapper,41);
+            }
+            else if ((httpServletRequest.getParameter("u") != null) && (httpServletRequest.getParameter("p") != null)){
                 Authentication authentication = authenticationService.getUserAuthentication(httpServletRequest);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);

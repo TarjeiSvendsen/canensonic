@@ -33,9 +33,18 @@ public class ApiKeyAuthenticationFilter extends GenericFilterBean {
 
         try {
             if (httpServletRequest.getParameter("apiKey") != null){
-                Authentication authentication = authenticationService.getAPIKeyAuthentication((HttpServletRequest) request);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                filterChain.doFilter(request, response);
+                if (httpServletRequest.getParameter("u") != null ||
+                    httpServletRequest.getParameter("p") != null ||
+                    httpServletRequest.getParameter("t") != null ||
+                    httpServletRequest.getParameter("s") != null
+                ){
+                    ErrorWriterUtils.writeErrorElementToWriter(httpResponse,mapper,43);
+                }
+                else {
+                    Authentication authentication = authenticationService.getAPIKeyAuthentication((HttpServletRequest) request);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    filterChain.doFilter(request, response);
+                }
             }
             else{
                 filterChain.doFilter(request, response);

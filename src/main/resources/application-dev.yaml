@@ -1,5 +1,11 @@
 spring:
-  application:
-    name: canensonic
   main:
     banner-mode: off
+  docker:
+    compose:
+      file:
+        - "compose.dev.yaml"
+  jpa:
+    hibernate:
+      ddl-auto: update
+

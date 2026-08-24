@@ -2,8 +2,6 @@ services:
   postgres:
     image: postgres:18-alpine
     ports:
-      - "5554:5432"
-
       - "${DB_PORT}:5432"
     environment:
       - POSTGRES_DB=${DB_NAME}

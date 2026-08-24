@@ -3,6 +3,7 @@ package no.tari.canensonic.api.system;
 import no.tari.canensonic.api.auth.token.APIToken;
 import no.tari.canensonic.api.auth.token.APITokenService;
 import no.tari.canensonic.api.auth.token.TokenInfoElement;
+import no.tari.canensonic.api.base.responses.SubsonicElement;
 import no.tari.canensonic.api.base.responses.SubsonicError;
 import no.tari.canensonic.api.base.responses.SubsonicRootElement;
 import no.tari.canensonic.utils.OpenSubsonicExtensionUtils;
@@ -106,4 +107,32 @@ public class SystemController {
         }
     }
 
+    // -- /rest/getLicence
+    // Sidenote, stupid stuff, is there any client that checks this??
+
+    @GetMapping(value = {"/rest/getLicence","/rest/getLicence.view"},produces = "application/json")
+    ResponseEntity<String> licenceGet(){
+        return getLicence();
+    }
+
+    @PostMapping(value = {"/rest/getLicence","/rest/getLicence.view"},produces = "application/json")
+    ResponseEntity<String> licencePost(){
+        return getLicence();
+    }
+
+    ResponseEntity<String> getLicence(){
+        SubsonicRootElement rootElement = new SubsonicRootElement();
+        rootElement.addChildNode("licence",new LicenceElement(true));
+        try {
+            rootElement.setStatus("ok");
+            return new ResponseEntity<>(mapper.writeValueAsString(rootElement), HttpStatusCode.valueOf(200));
+        }catch (Exception e){
+            rootElement.setStatus("failed");
+            rootElement.addChildNode("error", SubsonicError.from(0));
+            return new ResponseEntity<>(mapper.writeValueAsString(rootElement), HttpStatusCode.valueOf(200));
+        }
+    }
+
+    // Due to the other fields technically not being required, I won't bother including them, waste of space and computational power...
+    private record LicenceElement(boolean valid) implements SubsonicElement{}
 }

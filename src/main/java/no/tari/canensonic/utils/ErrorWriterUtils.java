@@ -16,9 +16,10 @@ public class ErrorWriterUtils {
      * @param mapper the object mapper to write with
      * @param errorCode the error code to write
      * @throws IOException in case any IO exception occurs during writing.
+     * @implNote As it seems like most clients always expect a 200 OK, that is always returned, regardless of error or response.
      */
     public static void writeErrorElementToWriter(HttpServletResponse response, ObjectMapper mapper,int errorCode) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SubsonicRootElement responseElement = new SubsonicRootElement();
         responseElement.setStatus("failed");

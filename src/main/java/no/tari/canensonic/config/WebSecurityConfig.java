@@ -2,7 +2,7 @@ package no.tari.canensonic.config;
 
 import no.tari.canensonic.api.auth.AuthenticationService;
 import no.tari.canensonic.config.filter.ApiKeyAuthenticationFilter;
-import org.springframework.cache.annotation.EnableCaching;
+import no.tari.canensonic.config.filter.UserAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -30,7 +30,8 @@ public class WebSecurityConfig {
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new ApiKeyAuthenticationFilter(authenticationService), BasicAuthenticationFilter.class);
+                .addFilterBefore(new ApiKeyAuthenticationFilter(authenticationService), BasicAuthenticationFilter.class)
+                .addFilterAfter(new UserAuthenticationFilter(authenticationService), ApiKeyAuthenticationFilter.class);
         return http.build();
     }
 

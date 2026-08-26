@@ -7,6 +7,7 @@ import no.tari.canensonic.api.base.responses.SubsonicElement;
 import no.tari.canensonic.api.base.responses.SubsonicError;
 import no.tari.canensonic.api.base.responses.SubsonicRootElement;
 import no.tari.canensonic.utils.OpenSubsonicExtensionUtils;
+import no.tari.canensonic.utils.ResponseUtils;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,15 +43,7 @@ public class SystemController {
     }
 
     ResponseEntity<String> pingServer(){
-        SubsonicRootElement rootElement = new SubsonicRootElement();
-        try {
-            rootElement.setStatus("ok");
-            return new ResponseEntity<>(mapper.writeValueAsString(rootElement), HttpStatusCode.valueOf(200));
-        }catch (Exception e){
-            rootElement.setStatus("failed");
-            rootElement.addChildNode("error", SubsonicError.from(0));
-            return new ResponseEntity<>(mapper.writeValueAsString(rootElement), HttpStatusCode.valueOf(200));
-        }
+        return ResponseUtils.produceEmptySubsonicResponse(mapper);
     }
 
     // -- rest/getOpenSubsonicExtensions --

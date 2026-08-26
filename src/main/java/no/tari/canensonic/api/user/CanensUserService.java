@@ -29,6 +29,27 @@ public class CanensUserService implements UserDetailsService {
         }
     }
 
+    /**
+     * Useful in cases where the user is known to exist.
+     * @param username the user to query the database for
+     * @return the {@link CanensUser} object of the specified user.
+     */
+    public CanensUser findCanensUserByUsername(String username){
+        Optional<CanensUser> user =  userRepository.findCanensUserByUsername(username);
+        if (user.isPresent())
+            return user.get();
+        else throw new UsernameNotFoundException("User does not exist");
+    }
+
+    /**
+     * Simple check to see if user exists or not, some day I want to try and implement a bloom filter instead of this.
+     * @param username the username to check existence of.
+     * @return true or false given the user exists or not.
+     */
+    public boolean doesUserExist(String username){
+        return  (userRepository.findCanensUserByUsername(username).isPresent());
+    }
+
     public CanensUser save(CanensUser user){
         return userRepository.save(user);
     }
